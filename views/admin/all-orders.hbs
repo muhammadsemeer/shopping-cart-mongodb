@@ -1,0 +1,47 @@
+{{#if response}}
+<div class="order-container">
+    {{#each response}}
+    <div class="my-orders">
+        <div class="image-container">
+            <img src="/images/product-images/{{this.variant}}" alt="">
+        </div>
+        <div class="order-details">
+            <h1>Product Details</h1>
+            <p>ID: {{this.orderID}}</p>
+            <p>Name: {{this.productname}}</p>
+            <p>Category: {{this.category}}</p>
+            <p>Brand: {{this.brand}}</p>
+            <p>Quantity: {{this.quantity}}</p>
+            <p>Rs. {{this.price}}</p>
+            <p>Total: {{this.total}}</p>
+        </div>
+        <div class="order-status">
+            <h1>User Deatils</h1>
+            <p>ID: {{this.userid}}</p>
+            <p>Name: {{this.username}}</p>
+            <p>Email: {{this.email}}</p>
+            {{#ifPaid this.paid}}
+            <h1>Payment Details</h1>
+            <p>Payment Id: {{this.razorpaypaymentid}}</p>
+            <p>Razorpay_Order Id: {{this.razorpayorderid}}</p>
+            {{/ifPaid}}
+        </div>
+        <div class="delivery-details">
+            <h1>Delivery Details</h1>
+            <p>Ordered Date: {{this.orderdate}}</p>
+            <p>Payment Method: {{this.payment}}</p>
+            <p>Delivery Date: {{this.deliverydate}}</p>
+            <p>Adresss: {{this.deliveryaddress}}</p>
+            <p>Pin Code / Zip Code: {{this.pincode}}</p>
+            <p>Mobile No: {{this.deliverymobileno}}</p>
+        </div>
+    </div>
+    {{/each}}
+</div>
+{{else}}
+<div class="empty">
+    <h1>
+        No Orders Yet Placed
+    </h1>
+</div>
+{{/if}}

@@ -1,0 +1,25 @@
+<div class="login-container">
+    <div class="login-form">
+        <h1>
+            Edit Profile
+        </h1>
+        <h4>
+            {{error}}
+        </h4>
+        <form action="/profile/edit" method="post" autocomplete="off">
+            <div class="input-section">
+                <input type="name" name="name" value="{{userDetails.name}}" required />
+                <label>
+                    Name
+                </label>
+            </div>
+            <div class="input-section">
+                <input type="email" name="email" required value="{{userDetails.email}}" />
+                <label>
+                    Email
+                </label>
+            </div>
+            <input type="submit" value="Update" />
+        </form>
+    </div>
+</div>

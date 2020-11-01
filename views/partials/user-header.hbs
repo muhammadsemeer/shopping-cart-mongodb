@@ -1,0 +1,119 @@
+<div class="menu-container" id="menu">
+  <span onclick="toggleMenu()">
+    ×
+  </span>
+  <a href="/">
+    All Products
+  </a>
+  {{#if user.admin}}
+    <a href="/admin">
+      Admin Panel
+    </a>
+  {{/if}}
+  <a href="/profile">
+    Account
+  </a>
+  <a href="/myorders">
+    My Orders
+  </a>
+  <a
+    id="logout-mobile"
+    href="/logout"
+    onclick="return confirm('Do You Want to logout ?')"
+  >
+    Logout
+  </a>
+</div>
+<header>
+  <div class="navbar">
+    <a href="/" class="logo">
+      Galaxieon Cart
+    </a>
+    <div>
+      <div class="nav-links">
+        <a href="/">
+          All Products
+        </a>
+        {{#if user}}
+          <a href="/myorders">
+            My Orders
+          </a>
+          {{#if user.admin}}
+            <a href="/admin">
+              Admin Panel
+            </a>
+          {{/if}}
+          <a href="/profile">
+            Account
+          </a>
+        {{else}}
+          <a href="/login" class="notification">
+            <span>
+              Login
+            </span>
+          </a>
+        {{/if}}
+      </div>
+      {{#if count}}
+        <a href="/cart" class="notification">
+          <span>
+            Cart
+          </span>
+          <span class="badge" id="cartCount">
+            {{count}}
+          </span>
+        </a>
+      {{else}}
+        <a href="/cart" class="notification">
+          <span>
+            Cart
+          </span>
+          <span class="badge" id="cartCount">
+            0
+          </span>
+        </a>
+      {{/if}}
+      {{#if user}}
+        <a
+          href="/logout"
+          id="logout-normal"
+          class="notification"
+          onclick="return confirm('Do You Want to logout ?')"
+        >
+          <span>
+            Logout
+          </span>
+        </a>
+      {{/if}}
+      {{#if user}}
+        <div class="menu">
+          <i class="fas fa-bars" onclick="toggleMenu()"></i>
+        </div>
+      {{else}}
+        <div class="menu">
+          <a href="/login" class="notification" style="margin-right: 0;">
+            <span>
+              Login
+            </span>
+          </a>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+  <div class="search" style="display: none;">
+    <form action="/admin/search" method="GET">
+      <div class="input">
+        <input
+          type="text"
+          name="query"
+          placeholder="Serach.."
+          value="{{query}}"
+          required
+        />
+        <button type="submit">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</header>

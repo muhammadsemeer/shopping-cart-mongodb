@@ -1,0 +1,61 @@
+{{#if products}}
+<div class="cart">
+  {{#each products}}
+  <div class="cart-container">
+    <div class="cart-admin-image">
+      <div class="slide" id="{{this._id}}">
+        <a href="/admin/edit-images/image1/{{this._id}}/{{this.image1}}">
+          <img src="/images/product-images/{{this.image1}}{{this._id}}.jpg" />
+        </a>
+      </div>
+      <div class="slide">
+        <a href="/admin/edit-images/image2/{{this._id}}/{{this.image2}}">
+          <img src="/images/product-images/{{this.image2}}{{this._id}}.jpg" />
+        </a>
+      </div>
+      <div class="slide">
+        <a href="/admin/edit-images/image2/{{this._id}}/{{this.image3}}">
+          <img src="/images/product-images/{{this.image3}}{{this._id}}.jpg" />
+        </a>
+      </div>
+    </div>
+    <div class="cart-content">
+      <h1>
+        {{this.name}}
+      </h1>
+      <p>
+        {{this.brand}}
+      </p>
+      <p>
+        {{this.category}}
+      </p>
+      <p>
+        {{this.description}}
+      </p>
+      <p>
+        Rs. {{this.price}}
+      </p>
+      <div class="btn-section">
+        <a href="/admin/edit-product/{{this._id}}">
+          <button>
+            Edit Details
+          </button>
+        </a>
+        <a href="/admin/delete-product/{{this._id}}/{{this.image1}}/{{this.image2}}/{{this.image3}}">
+          <button onclick="return confirm('Do You Want to Delete {{this.name}}?')" class="delete-btn">
+            Delete
+          </button>
+        </a>
+      </div>
+      <span>Click the image you want to edit</span>
+    </div>
+  </div>
+  {{/each}}
+</div>
+{{else}}
+<div class="empty">
+    <h1>
+        No Products Found
+    </h1>
+</div>
+{{/if}}

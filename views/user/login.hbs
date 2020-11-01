@@ -1,0 +1,28 @@
+<div class="login-container">
+  <div class="login-form">
+    <h1>
+      Login
+    </h1>
+    <h4>
+      {{error}}
+    </h4>
+    <form action="/login" method="post" autocomplete="off">
+      <div class="input-section">
+        <input type="email" name="email" required />
+        <label for="email">
+          Email
+        </label>
+      </div>
+      <div class="input-section">
+        <input type="password" name="password" required />
+        <label >
+          Password
+        </label>
+      </div>
+      <a href="/signup">
+        Don't Have a Account ?
+      </a>
+      <input type="submit" value="Login" />
+    </form>
+  </div>
+</div>

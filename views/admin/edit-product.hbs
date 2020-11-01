@@ -1,0 +1,28 @@
+<div class="login-container">
+    <div class="login-form">
+        <h1>Edit Product</h1>
+        <form action="/admin/edit-product/{{product._id}}" enctype="multipart/form-data" method="POST">
+            <div class="input-section">
+                <label>Name</label>
+                <input type="text" name="name" value="{{product.name}}">
+            </div>
+            <div class="input-section">
+                <label>Brand</label>
+                <input type="text" name="brand" value="{{product.brand}}">
+            </div>
+            <div class="input-section">
+                <label>Category</label>
+                <input type="text" name="category" value="{{product.category}}">
+            </div>
+            <div class="input-section">
+                <label>Description</label>
+                <input type="text" name="description" value="{{product.description}}">
+            </div>
+            <div class="input-section">
+                <label>Price</label>
+                <input type="text" name="price" value="{{product.price}}">
+            </div>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+</div>

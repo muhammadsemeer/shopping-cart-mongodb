@@ -1,0 +1,78 @@
+<div class="menu-container" id="menu">
+  <span onclick="toggleMenu()">
+    ×
+  </span>
+  <a href="/admin">
+    All Product
+  </a>
+  <a href="/">
+    User Panel
+  </a>
+  <a href="/admin/allorders">
+    All Orders
+  </a>
+  <a href="/admin/allusers">
+    All Users
+  </a>
+  <a href="/admin/add-product" class="add-product">
+    Add Product
+  </a>
+  <a href="/logout" onclick="return confirm('Do You Want to logout ?')">
+    Logout
+  </a>
+</div>
+<header>
+  <div class="navbar">
+    <a href="/admin" class="logo">
+      Admin Panel
+    </a>
+    <div class="nav-links">
+      <a href="/admin">
+        All Product
+      </a>
+      <a href="/">
+        User Panel
+      </a>
+      <a href="/admin/allorders">
+        All Orders
+      </a>
+      <a href="/admin/allusers">
+        All Users
+      </a>
+      <a href="/admin/add-product" class="notification">
+        <span>
+          Add Product
+        </span>
+      </a>
+      <a
+        href="/logout"
+        id="logout-normal"
+        class="notification"
+        onclick="return confirm('Do You Want to logout ?')"
+      >
+        <span>
+          Logout
+        </span>
+      </a>
+    </div>
+    <div class="menu">
+      <i class="fas fa-bars" onclick="toggleMenu()"></i>
+    </div>
+  </div>
+  <div class="search" style="display: none;">
+    <form action="/admin/search" method="GET">
+      <div class="input">
+        <input
+          type="text"
+          name="query"
+          placeholder="Serach.."
+          value="{{query}}"
+          required
+        />
+        <button type="submit">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</header>

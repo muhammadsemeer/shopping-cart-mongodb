@@ -1,0 +1,14 @@
+<div class="login-container">
+    <div class="login-form">
+        <h1>Edit Image</h1>
+        <form action="/admin/edit-images/{{image.imageno}}/{{image.prodID}}/{{image.image}}" enctype="multipart/form-data" method="POST">
+            <img src="/images/product-images/{{image.image}}{{image.prodID}}.jpg" style="width: 100px;"
+                id="prodimage1">
+            <div class="input-section">
+                <label>Image</label>
+                <input type="file" name="image" onchange="viewImage(event , 'image1')">
+            </div>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+{{#if product}}
+<div class="cart">
+  {{#each product}}
+  <div class="cart-container" id="t{{this.productid}}{{this.variant}}">
+    <div class="cart-image">
+      <img src="./images/product-images/{{this.variant}}" />
+    </div>
+    <div class="cart-content">
+      <h1>
+        {{this.name}}
+      </h1>
+      <p>
+        Rs .
+        {{this.price}}
+      </p>
+      <div class="btn-section">
+        <button class="count-button" id="m{{this.productid}}"
+          onclick="quantity('{{this.productid}}', 'dnc', '{{this.price}}', '{{this.variant}}')">
+          -
+        </button>
+        <span id="{{this.productid}}{{this.variant}}">
+          {{this.quantity}}
+        </span>
+        <button class="count-button" onclick="quantity('{{this.productid}}', 'inc', '{{this.price}}', '{{this.variant}}')">
+          +
+        </button>
+        <br />
+        <button class="delete-btn" onclick="deleteCartItem('{{this.productid}}','{{this.name}}' , '{{this.price}}', '{{this.variant}}')">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>
+<div class="checkout">
+  <div>
+    <h3>Total Amuont</h3>
+    <h3>Rs. <span id="total">{{total}}</span></h3>
+  </div>
+  <a href="/place-order">
+    Place Order
+  </a>
+</div>
+{{else}}
+<div class="empty">
+  <h1>
+    Cart is Empty
+  </h1>
+</div>
+{{/if}}

@@ -1,0 +1,16 @@
+<div class="all-users">
+    <table>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+            {{#each users}}
+            <tr>
+                <td>{{this.userid}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.email}}</td>
+            </tr>
+            {{/each}}
+    </table>
+</div>
