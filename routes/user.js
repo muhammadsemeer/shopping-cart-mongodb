@@ -67,8 +67,36 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-router.get("/cart", verifylogin, (req, res) => {
-  res.render("user/cart");
+router.get("/cart", verifylogin, async (req, res) => {
+  let user = req.session.user;
+  let count = 0;
+  let product = {};
+  // if (user) {
+  //   // count = await userHelpers.getCartCount(req.session.user.userid);
+  // }
+  // await userHelpers
+  //   .getCartProducts(req.session.user.userid)
+  //   .then(async (response) => {
+  //     if (response) {
+  //       product = response.result;
+  //     }
+  //   });
+  let total;
+  if (product) {
+    // total = await userHelpers.getTotalAmountCart(req.session.user.userid);
+  }
+  res.render("user/cart", { product, user, count, total });
 });
 
+router.get("/add-to-cart/:id/:variant", (req, res) => {
+  if (req.session.user) {
+    userHelpers
+      .addToCart(req.params, req.session.user._id)
+      .then((response) => {
+        res.json({ status: true });
+      });
+  } else {
+    res.json({ status: false });
+  }
+});
 module.exports = router;

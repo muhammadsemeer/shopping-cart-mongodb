@@ -72,4 +72,36 @@ router.post("/edit-product/:id", async (req, res) => {
     });
 });
 
+router.get("/edit-images/:imageno/:prodID/:image", (req, res) => {
+  res.render("admin/edit-image", {
+    image: req.params,
+    admin: true,
+  });
+});
+
+router.post("/edit-images/:imageno/:prodID/:image", (req, res) => {
+  let image = req.files.image;
+  let id = req.params.prodID;
+  let oldImage = req.params.image;
+  if (image) {
+    productHelpers.editProductImage(req.params, image).then((response) => {
+      image.mv(
+        "./public/images/product-images/" + image.name + id + ".jpg",
+        (err) => {
+          if (err) {
+            console.log(err);
+          }
+          fs.unlink(
+            "./public/images/product-images/" + oldImage + id + ".jpg",
+            (error) => {
+              if (error) throw error;
+            }
+          );
+        }
+      );
+      res.redirect("/admin");
+    });
+  }
+});
+
 module.exports = router;

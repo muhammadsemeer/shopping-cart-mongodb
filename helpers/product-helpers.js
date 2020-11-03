@@ -70,4 +70,53 @@ module.exports = {
         });
     });
   },
+  editProductImage: (details, file) => {
+    return new Promise((resolve, reject) => {
+      const { imageno, prodID } = details;
+      if (imageno === "image1") {
+        db.get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .updateOne(
+            { _id: objectId(prodID) },
+            {
+              $set: {
+                image1: file.name,
+              },
+            }
+          )
+          .then((response) => {
+            resolve();
+          });
+        console.log("here if");
+      } else if (imageno === "image2") {
+        db.get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .updateOne(
+            { _id: objectId(prodID) },
+            {
+              $set: {
+                image2: file.name,
+              },
+            }
+          )
+          .then((response) => {
+            resolve();
+          });
+      } else {
+        db.get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .updateOne(
+            { _id: objectId(prodID) },
+            {
+              $set: {
+                image3: file.name,
+              },
+            }
+          )
+          .then((response) => {
+            resolve();
+          });
+      }
+    });
+  },
 };
