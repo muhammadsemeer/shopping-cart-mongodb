@@ -62,7 +62,7 @@ module.exports = {
           db.get()
             .collection(collection.CART_COLLECTION)
             .updateOne(
-              { "products.item": ObjectId(id) },
+              { user: ObjectId(userId), "products.item": ObjectId(id) },
               {
                 $inc: { "products.$.quantity": 1 },
               }
@@ -123,8 +123,16 @@ module.exports = {
               as: "products",
             },
           },
+          {
+            $project: {
+              item: 1,
+              quantity: 1,
+              product: { $arrayElemAt: ["$products", 0] },
+            },
+          },
         ])
         .toArray();
+      console.log(cartItems);
       resolve(cartItems);
     });
   },
@@ -139,6 +147,26 @@ module.exports = {
         count = cart.products.length;
       }
       resolve(count);
+    });
+  },
+  changeProductQuanity: (details) => {
+    const { cartId, prodId, func } = details;
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.CART_COLLECTION)
+        .updateOne(
+          { _id: ObjectId(cartId), "products.item": ObjectId(prodId) },
+          {
+            $inc: { "products.$.quantity": parseInt(func) },
+          }
+        )
+        .then((response) => {
+          if (func === "1") {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        });
     });
   },
 };

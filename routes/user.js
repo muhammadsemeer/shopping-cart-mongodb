@@ -45,7 +45,7 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.get("/signup", verifylogin, (req, res) => {
+router.get("/signup", (req, res) => {
   if (req.session.loggedIn) {
     res.redirect("/");
   } else {
@@ -54,7 +54,7 @@ router.get("/signup", verifylogin, (req, res) => {
   }
 });
 
-router.post("/signup", verifylogin, (req, res) => {
+router.post("/signup", (req, res) => {
   userHelpers
     .doSignUp(req.body)
     .then((response) => {
@@ -77,7 +77,7 @@ router.get("/cart", verifylogin, async (req, res) => {
   let count = 0;
   let product = {};
   if (user) {
-    count = await userHelpers.getCartCount(req.session.user.userid);
+    count = await userHelpers.getCartCount(req.session.user._id);
   }
   await userHelpers
     .getCartProducts(req.session.user._id)
@@ -101,5 +101,11 @@ router.get("/add-to-cart/:id", (req, res) => {
   } else {
     res.json({ status: false });
   }
+});
+
+router.get("/change-quantity/:cartId/:prodId/:func", (req, res) => {
+  userHelpers.changeProductQuanity(req.params).then((response) => {
+    res.json(response);
+  });
 });
 module.exports = router;

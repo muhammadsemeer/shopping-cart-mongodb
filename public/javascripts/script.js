@@ -39,8 +39,8 @@ const changeImage = (imageId, prodId) => {
   image.src = imageURL;
 };
 
-const quantity = (prodId, func, price, variant) => {
-  let quantity = document.getElementById(prodId + variant).innerHTML;
+const quantity = (cartId,prodId, func, price) => {
+  let quantity = document.getElementById(prodId).innerHTML;
   if (quantity == 1 && func === "dnc") {
     var co = confirm("Do You Want To Delete The Product ?");
     if (co) {
@@ -53,7 +53,7 @@ const quantity = (prodId, func, price, variant) => {
         .then((res) => res.json())
         .then((response) => {
           if (response.status) {
-            var id = "t" + prodId + variant;
+            var id = "t" + prodId;
             let item = document.getElementById(id);
             item.style.display = "none";
             let count = document.getElementById("cartCount").innerHTML;
@@ -66,7 +66,7 @@ const quantity = (prodId, func, price, variant) => {
         });
     }
   } else {
-    fetch("/change-quantity/" + prodId + "/" + func, {
+    fetch("/change-quantity/" + cartId + "/" + prodId + "/" + func, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -75,16 +75,16 @@ const quantity = (prodId, func, price, variant) => {
       .then((res) => res.json())
       .then((response) => {
         if (response) {
-          let quantity = document.getElementById(prodId + variant).innerHTML;
+          let quantity = document.getElementById(prodId).innerHTML;
           quantity = parseInt(quantity) + 1;
-          document.getElementById(prodId + variant).innerHTML = quantity;
+          document.getElementById(prodId).innerHTML = quantity;
           let total = document.getElementById("total").innerHTML;
           total = parseFloat(total) + parseFloat(price);
           document.getElementById("total").innerHTML = total;
         } else {
-          let quantity = document.getElementById(prodId + variant).innerHTML;
+          let quantity = document.getElementById(prodId).innerHTML;
           quantity = parseInt(quantity) - 1;
-          document.getElementById(prodId + variant).innerHTML = quantity;
+          document.getElementById(prodId).innerHTML = quantity;
           let total = document.getElementById("total").innerHTML;
           total = parseFloat(total) - parseFloat(price);
           document.getElementById("total").innerHTML = total;

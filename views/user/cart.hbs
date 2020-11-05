@@ -1,29 +1,27 @@
 {{#if product}}
 <div class="cart">
   {{#each product}}
-  <div class="cart-container" id="t{{this.item}}{{this.variant}}">
-  {{#each this.products}}
+  <div class="cart-container" id="t{{this.product._id}}">
     <div class="cart-image">
-      <img src="./images/product-images/{{this.image1}}{{this._id}}.jpg" />
+      <img src="./images/product-images/{{this.product.image1}}{{this.product._id}}.jpg" />
     </div>
     <div class="cart-content">
       <h1>
-        {{this.name}}
+        {{this.product.name}}
       </h1>
       <p>
         Rs .
-        {{this.price}}
+        {{this.product.price}}
       </p>
-    {{/each}}
       <div class="btn-section">
         <button class="count-button" id="m{{this.item}}"
-          onclick="quantity('{{this.item}}', 'dnc', '{{this.price}}')">
+          onclick="quantity('{{this._id}}','{{this.product._id}}', -1, '{{this.product.price}}')">
           -
         </button>
-        <span id="{{this.item}}{{this.variant}}">
+        <span id="{{this.product._id}}">
           {{this.quantity}}
         </span>
-        <button class="count-button" onclick="quantity('{{this._id}}', 'inc', '{{this.price}}')">
+        <button class="count-button" onclick="quantity('{{this._id}}','{{this.product._id}}', 1, '{{this.product.price}}')">
           +
         </button>
         <br />
