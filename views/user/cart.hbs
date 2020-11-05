@@ -1,9 +1,10 @@
 {{#if product}}
 <div class="cart">
   {{#each product}}
-  <div class="cart-container" id="t{{this.productid}}{{this.variant}}">
+  <div class="cart-container" id="t{{this.item}}{{this.variant}}">
+  {{#each this.products}}
     <div class="cart-image">
-      <img src="./images/product-images/{{this.variant}}" />
+      <img src="./images/product-images/{{this.image1}}{{this._id}}.jpg" />
     </div>
     <div class="cart-content">
       <h1>
@@ -13,19 +14,20 @@
         Rs .
         {{this.price}}
       </p>
+    {{/each}}
       <div class="btn-section">
-        <button class="count-button" id="m{{this.productid}}"
-          onclick="quantity('{{this.productid}}', 'dnc', '{{this.price}}', '{{this.variant}}')">
+        <button class="count-button" id="m{{this.item}}"
+          onclick="quantity('{{this.item}}', 'dnc', '{{this.price}}')">
           -
         </button>
-        <span id="{{this.productid}}{{this.variant}}">
+        <span id="{{this.item}}{{this.variant}}">
           {{this.quantity}}
         </span>
-        <button class="count-button" onclick="quantity('{{this.productid}}', 'inc', '{{this.price}}', '{{this.variant}}')">
+        <button class="count-button" onclick="quantity('{{this._id}}', 'inc', '{{this.price}}')">
           +
         </button>
         <br />
-        <button class="delete-btn" onclick="deleteCartItem('{{this.productid}}','{{this.name}}' , '{{this.price}}', '{{this.variant}}')">
+        <button class="delete-btn" onclick="deleteCartItem('{{this._id}}','{{this.name}}' , '{{this.price}}')">
           Delete
         </button>
       </div>

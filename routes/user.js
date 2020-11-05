@@ -11,9 +11,14 @@ const verifylogin = (req, res, next) => {
 };
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
+router.get("/", async (req, res, next) => {
+  let count = 0;
+  let user = req.session.user;
+  if (user) {
+    count = await userHelpers.getCartCount(req.session.user._id);
+  }
   productHelper.getAllProducts().then((products) => {
-    res.render("user/view-products", { products, user: req.session.user });
+    res.render("user/view-products", { products, count, user });
   });
 });
 
@@ -71,16 +76,16 @@ router.get("/cart", verifylogin, async (req, res) => {
   let user = req.session.user;
   let count = 0;
   let product = {};
-  // if (user) {
-  //   // count = await userHelpers.getCartCount(req.session.user.userid);
-  // }
-  // await userHelpers
-  //   .getCartProducts(req.session.user.userid)
-  //   .then(async (response) => {
-  //     if (response) {
-  //       product = response.result;
-  //     }
-  //   });
+  if (user) {
+    count = await userHelpers.getCartCount(req.session.user.userid);
+  }
+  await userHelpers
+    .getCartProducts(req.session.user._id)
+    .then(async (response) => {
+      if (response) {
+        product = response;
+      }
+    });
   let total;
   if (product) {
     // total = await userHelpers.getTotalAmountCart(req.session.user.userid);
@@ -88,13 +93,11 @@ router.get("/cart", verifylogin, async (req, res) => {
   res.render("user/cart", { product, user, count, total });
 });
 
-router.get("/add-to-cart/:id/:variant", (req, res) => {
+router.get("/add-to-cart/:id", (req, res) => {
   if (req.session.user) {
-    userHelpers
-      .addToCart(req.params, req.session.user._id)
-      .then((response) => {
-        res.json({ status: true });
-      });
+    userHelpers.addToCart(req.params, req.session.user._id).then((response) => {
+      res.json({ status: true });
+    });
   } else {
     res.json({ status: false });
   }
