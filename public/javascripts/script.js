@@ -20,7 +20,12 @@ const addToCart = (prodId, name) => {
   })
     .then((res) => res.json())
     .then((response) => {
-      if (response.status) {
+      if (response.status === "new") {
+        alert(name + " added to cart");
+        let count = document.getElementById("cartCount").innerHTML;
+        count = parseInt(count) + 1;
+        document.getElementById("cartCount").innerHTML = count;
+      } else if (response.status === "inc") {
         alert(name + " added to cart");
       } else {
         alert("Please Login to complete the action");
@@ -39,12 +44,12 @@ const changeImage = (imageId, prodId) => {
   image.src = imageURL;
 };
 
-const quantity = (cartId,prodId, func, price) => {
+const quantity = (cartId, prodId, func, price) => {
   let quantity = document.getElementById(prodId).innerHTML;
-  if (quantity == 1 && func === "dnc") {
+  if (quantity == 1 && func === -1) {
     var co = confirm("Do You Want To Delete The Product ?");
     if (co) {
-      fetch("/delete-cart-product/" + prodId, {
+      fetch("/delete-cart-product/" + cartId + "/" + prodId, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -93,10 +98,10 @@ const quantity = (cartId,prodId, func, price) => {
   }
 };
 
-const deleteCartItem = (prodId, name, price, variant) => {
+const deleteCartItem = (cartId, prodId, name, price) => {
   var con = confirm("Do You Want to delete " + name + " from Your Cart");
   if (con) {
-    fetch("/delete-cart-product/" + prodId + "/" + variant, {
+    fetch("/delete-cart-product/" + cartId + "/" + prodId, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -105,10 +110,10 @@ const deleteCartItem = (prodId, name, price, variant) => {
       .then((res) => res.json())
       .then((response) => {
         if (response.status) {
-          var id = "t" + prodId + variant;
+          var id = "t" + prodId;
           let item = document.getElementById(id);
           item.style.display = "none";
-          let quantity = document.getElementById(prodId + variant).innerHTML;
+          let quantity = document.getElementById(prodId).innerHTML;
           let count = document.getElementById("cartCount").innerHTML;
           count = parseInt(count) - parseInt(quantity);
           document.getElementById("cartCount").innerHTML = count;
