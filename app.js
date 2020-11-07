@@ -22,6 +22,15 @@ app.engine(
     defaultLayout: "layout",
     layoutsDir: __dirname + "/views/layout/",
     partialsDir: __dirname + "/views/partials/",
+    helpers: {
+      ifPaid: function (payment, options) {
+        if (payment === "Paid") {
+          return options.fn(this);
+        } else {
+          return options.inverse(this);
+        }
+      },
+    },
   })
 );
 app.use(logger("dev"));

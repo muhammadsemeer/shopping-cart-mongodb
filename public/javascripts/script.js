@@ -20,16 +20,16 @@ const addToCart = (prodId, name) => {
   })
     .then((res) => res.json())
     .then((response) => {
-      if (response.status === "new") {
+      if (response.status === true) {
         alert(name + " added to cart");
         let count = document.getElementById("cartCount").innerHTML;
         count = parseInt(count) + 1;
         document.getElementById("cartCount").innerHTML = count;
-      } else if (response.status === "inc") {
-        alert(name + " added to cart");
-      } else {
+      } else if (response.status === false) {
         alert("Please Login to complete the action");
         window.location = "/login";
+      } else {
+        alert(name + " added to cart");
       }
     });
 };
@@ -148,17 +148,13 @@ const placeorder = (event) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      if (res.status) {
+      if (res.status === "COD") {
         alert("Order Placed Sucessfully");
-        // window.location = "/myorders";
-        window.location = "/";
-      }
-      // else if (res.status ) {
-      //   alert("Your Order is Pending Complete the Payment to the Place Order");
-      //   window.location = "/myorders";
-      // }
-      else {
+        window.location = "/myorders";
+      } else if (res.status == false) {
         window.location = "/login";
+      } else {
+        razorpayPayment(res);
       }
     });
 };
@@ -180,30 +176,17 @@ const validation = (event) => {
   }
 };
 
-const payOnline = (orderId, amount, paymentmethod) => {
-  fetch(`/payment?orderId=${orderId}&amount=${amount}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      razorpayPayment(res, paymentmethod);
-    });
-};
-
-function razorpayPayment(res, method) {
+function razorpayPayment(order) {
   var options = {
-    key: res.key, // Enter the Key ID generated from the Dashboard
-    amount: res.response.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    key: order.razkey, // Enter the Key ID generated from the Dashboard
+    amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     currency: "INR",
     name: "Galaxieon Shopping",
     description: "Transfer Your Money Securly",
     image: "/images/GALAXIEON CART.png",
-    order_id: res.response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     handler: function (response) {
-      verifyPayment(response, res.response, method);
+      verifyPayment(response, order);
     },
     prefill: {
       name: "",
@@ -232,8 +215,8 @@ function razorpayPayment(res, method) {
   rzp1.open();
 }
 
-function verifyPayment(payment, order, method) {
-  fetch("/verifyPayment", {
+function verifyPayment(payment, order) {
+  fetch("/verify-payment", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -241,17 +224,16 @@ function verifyPayment(payment, order, method) {
     body: JSON.stringify({
       payment,
       order,
-      method: method,
     }),
   })
     .then((res) => res.json())
     .then((res) => {
       if (res.status) {
         alert("Payment SucessFully");
-        location.reload();
+        window.location = "/myorders";
       } else {
         alert("Payment Failed Try Again Later");
-        location.reload();
+        window.location = "/myorders";
       }
     });
 }

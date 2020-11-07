@@ -1,48 +1,103 @@
 {{#if product}}
-<div class="order-container">
+  <div class="order-container">
     {{#each product}}
-    <div class="my-orders" id="{{this.orderID}}">
+      <div class="my-orders" id="{{this._id}}">
         <div class="image-container">
-            <img src="./images/product-images/{{this.variant}}" alt="">
+          <img
+            src="./images/product-images/{{this.product.image1}}{{this.product._id}}.jpg"
+          />
         </div>
         <div class="order-details">
-            <h1>Order Details</h1>
-            <p>Order ID: {{this.orderID}}</p>
-            <p>{{this.name}}</p>
-            <p>{{this.category}}</p>
-            <p>{{this.brand}}</p>
-            <p>Quantity: {{this.quantity}}</p>
-            <p>Rs. {{this.price}}</p>
-            <p>Total: {{this.total}}</p>
+          <h1>
+            Order Details
+          </h1>
+          <p>
+            Order ID:
+            {{this._id}}
+          </p>
+          <p>
+            {{this.product.name}}
+          </p>
+          <p>
+            {{this.product.category}}
+          </p>
+          <p>
+            {{this.product.brand}}
+          </p>
+          <p>
+            Quantity:
+            {{this.quantity}}
+          </p>
+          <p>
+            Rs.
+            {{this.product.price}}
+          </p>
+          <p>
+            Total:
+            {{this.total}}
+          </p>
         </div>
         <div class="order-status">
-            <h1>Order Status</h1>
-            <p>Ordered Date: {{this.orderdate}}</p>
-            <p>Payment Method: {{this.payment}}</p>
-            <p>Current Status: {{this.status}}</p>
-            {{#ifNotPaid this.paid}}
-            <button onclick="payOnline('{{this.orderID}}',{{this.total}},'{{this.payment}}')">Pay Online</button>
-            {{else}}
-            <h1>Payment Details</h1>
-            <p>Payment Id: {{this.razorpaypaymentid}}</p>
-            <p>Razorpay_Order Id: {{this.razorpayorderid}}</p>
-            {{/ifNotPaid}}
-            <button onclick="cancelOrder({{this.orderID}})">Cancel Order</button>
+          <h1>
+            Order Status
+          </h1>
+          <p>
+            Ordered Date:
+            {{this.orderdate}}
+          </p>
+          <p>
+            Payment Method:
+            {{this.paymentmethod}}
+          </p>
+          <p>
+            Current Status:
+            {{this.status}}
+          </p>
+          {{#ifPaid this.paid}}
+            <h1>
+              Payment Details
+            </h1>
+            <p>
+              Payment Id:
+              {{this.razorpay_payment_id}}
+            </p>
+            <p>
+              Razorpay_Order Id:
+              {{this.razorpay_order_id}}
+            </p>
+          {{/ifPaid}}
+          <button onclick="cancelOrder({{this._id}})">
+            Cancel Order
+          </button>
         </div>
         <div class="delivery-details">
-            <h1>Delivery Details</h1>
-            <p>Delivery Date: {{this.deliverydate}}</p>
-            <p>Adresss: {{this.deliveryaddress}}</p>
-            <p>Pin Code: {{this.pincode}}</p>
-            <p>Mobile No: {{this.deliverymobileno}}</p>
+          <h1>
+            Delivery Details
+          </h1>
+          <p>
+            Delivery Date:
+            {{this.deliverydate}}
+          </p>
+          <p>
+            Adresss:
+            {{this.deliveryDetials.address}}
+          </p>
+          <p>
+            Pin Code:
+            {{this.deliveryDetials.pincode}}
+          </p>
+          <p>
+            Mobile No:
+            {{this.deliveryDetials.mobile}}
+          </p>
         </div>
-    </div>
+      </div>
     {{/each}}
-</div>
+  </div>
 {{else}}
-<div class="empty">
+  <div class="empty">
     <h1>
-        You Have No Orders Placed
+      You Have No Orders Placed
     </h1>
-</div>
+  </div>
 {{/if}}

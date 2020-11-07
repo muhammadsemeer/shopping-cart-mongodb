@@ -133,12 +133,38 @@ router.post("/place-order", async (req, res) => {
   if (req.session.user) {
     let products = await userHelpers.getCartProductList(req.body.userId);
     let total = await userHelpers.getTotalAmountCart(req.body.userId);
-    userHelpers.placeOrder(req.body, products, total).then((response) => {
-      res.json({ status: true });
+    userHelpers.placeOrder(req.body, products, total).then((orderId) => {
+      if (req.body.paymentmethod === "COD") {
+        res.json({ status: "COD" });
+      } else {
+        userHelpers.generateRazorpay(orderId, total).then((response) => {
+          res.json(response);
+        });
+      }
     });
   } else {
     res.json({ status: false });
   }
+});
+
+router.get("/myorders", verifylogin, async (req, res) => {
+  let product = await userHelpers.getMyorders(req.session.user._id);
+  res.render("user/my-orders", { user: req.session.user, product });
+});
+
+router.post("/verify-payment", verifylogin, (req, res) => {
+  userHelpers
+    .verifyPayment(req.body)
+    .then((response) => {
+      userHelpers
+        .changePaymentStatus(response, req.body.order.receipt)
+        .then((response) => {
+          res.json({ status: true });
+        });
+    })
+    .catch((err) => {
+      res.json({ status: false });
+    });
 });
 
 module.exports = router;
