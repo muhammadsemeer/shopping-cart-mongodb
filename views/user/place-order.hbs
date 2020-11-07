@@ -1,46 +1,67 @@
 <div class="login-container">
-    <div class="login-form">
-        <h1>
-            Order Informations
-        </h1>
-        <h4>
-            {{error}}
-        </h4>
-        <form autocomplete="off" onsubmit="placeorder(event)">
-            <div class="input-section">
-                <input type="text" name="address" required />
-                <label>
-                    Address
-                </label>
-            </div>
-            <div class="input-section">
-                <input type="text" pattern="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" name="mobileno"
-                    required />
-                <label>
-                    Mobile-No
-                </label>
-            </div>
-            <div class="input-section">
-                <input type="text" pattern="[0-9][0-9][0-9][0-9][0-9][0-9]" name="pincode" required />
-                <label>
-                    Pin Code
-                </label>
-            </div>
-            <div>
-                <h3>Total Amount</h3>
-                <br>
-                <h3>Rs. {{total}}</h3>
-                <br>
-                <h2>Payment Method</h2>
-                <br>
-                <input type="radio" name="paymentmethod" value="COD" checked>
-                <label>Cash On Delivery</label>
-                <br>
-                <br>
-                <input type="radio" name="paymentmethod" value="ONLINE">
-                <label>Online Payment</label>
-            </div>
-            <input type="submit" value="Checkout" />
-        </form>
-    </div>
+  <div class="login-form">
+    <h1>
+      Order Informations
+    </h1>
+    <h4>
+      {{error}}
+    </h4>
+    <form autocomplete="off" onsubmit="placeorder(event)">
+      <div class="input-section">
+        <input type="text" name="address" required />
+        <label>
+          Address
+        </label>
+      </div>
+      <div class="input-section">
+        <input
+          type="text"
+          pattern="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"
+          name="mobileno"
+          required
+        />
+        <label>
+          Mobile-No
+        </label>
+      </div>
+      <div class="input-section">
+        <input
+          type="text"
+          pattern="[0-9][0-9][0-9][0-9][0-9][0-9]"
+          name="pincode"
+          required
+        />
+        <label>
+          Pin Code
+        </label>
+      </div>
+      <div>
+        <h3>
+          Total Amount
+        </h3>
+        <br />
+        <h3>
+          Rs.
+          {{total}}
+        </h3>
+        <br />
+        <h2>
+          Payment Method
+        </h2>
+        <br />
+        <input type="radio" name="paymentmethod" value="COD" checked />
+        <label>
+          Cash On Delivery
+        </label>
+        <br />
+        <br />
+        <input type="radio" name="paymentmethod" value="ONLINE" />
+        <label>
+          Online Payment
+        </label>
+        <input type="text" name="userId" value="{{user._id}}" hidden />
+      </div>
+      <input type="submit" value="Checkout" />
+    </form>
+  </div>
 </div>

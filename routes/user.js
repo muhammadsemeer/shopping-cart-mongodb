@@ -122,11 +122,23 @@ router.get("/delete-cart-product/:cartId/:prodId", (req, res) => {
 
 router.get("/place-order", verifylogin, async (req, res) => {
   let total = await userHelpers.getTotalAmountCart(req.session.user._id);
-  res.render("user/place-order", { total });
+  let count = 0;
+  if (req.session.user) {
+    count = await userHelpers.getCartCount(req.session.user._id);
+  }
+  res.render("user/place-order", { user: req.session.user, total, count });
 });
 
-router.post("/place-order", (req, res) => {
-  console.log(req.body);
+router.post("/place-order", async (req, res) => {
+  if (req.session.user) {
+    let products = await userHelpers.getCartProductList(req.body.userId);
+    let total = await userHelpers.getTotalAmountCart(req.body.userId);
+    userHelpers.placeOrder(req.body, products, total).then((response) => {
+      res.json({ status: true });
+    });
+  } else {
+    res.json({ status: false });
+  }
 });
 
 module.exports = router;

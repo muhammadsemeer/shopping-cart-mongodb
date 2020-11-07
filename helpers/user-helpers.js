@@ -232,4 +232,44 @@ module.exports = {
       resolve(total[0].total);
     });
   },
+  getCartProductList: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      let cart = await db
+        .get()
+        .collection(collection.CART_COLLECTION)
+        .findOne({ user: ObjectId(userId) });
+      resolve(cart.products);
+    });
+  },
+  placeOrder: (order, products, total) => {
+    return new Promise((resolve, reject) => {
+      let status = order.paymentmethod === "COD" ? "Placed" : "Pending";
+      var orderdate = new Date();
+      var deliverydate = new Date();
+      deliverydate.setDate(deliverydate.getDate() + 7);
+      let orderObj = {
+        deliveryDetials: {
+          mobile: order.mobileno,
+          address: order.address,
+          pincode: order.pincode,
+        },
+        userId: ObjectId(order.userId),
+        paymentmethod: order.paymentmethod,
+        products: products,
+        total: total,
+        orderdate: orderdate.toDateString(),
+        deliverydate: deliverydate.toDateString(),
+        status: status,
+      };
+      db.get()
+        .collection(collection.ORDER_COLLECTION)
+        .insertOne(orderObj)
+        .then((response) => {
+          db.get()
+            .collection(collection.CART_COLLECTION)
+            .removeOne({ user: ObjectId(order.userId) });
+          resolve();
+        });
+    });
+  },
 };

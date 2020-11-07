@@ -130,6 +130,7 @@ const placeorder = (event) => {
   var adderss = document.querySelector("input[name=address]").value;
   var mobileno = document.querySelector("input[name=mobileno]").value;
   var pincode = document.querySelector("input[name=pincode]").value;
+  var userId = document.querySelector("input[name=userId]").value;
   var payment = document.querySelectorAll("input[name=paymentmethod]");
   var paymentmethod = payment[0].checked ? "COD" : "ONLINE";
   fetch("/place-order", {
@@ -142,17 +143,21 @@ const placeorder = (event) => {
       mobileno: mobileno,
       pincode: pincode,
       paymentmethod: paymentmethod,
+      userId: userId,
     }),
   })
     .then((res) => res.json())
     .then((res) => {
-      if (res.status === "Placed") {
+      if (res.status) {
         alert("Order Placed Sucessfully");
-        window.location = "/myorders";
-      } else if (res.status === "Pending") {
-        alert("Your Order is Pending Complete the Payment to the Place Order");
-        window.location = "/myorders";
-      } else {
+        // window.location = "/myorders";
+        window.location = "/";
+      }
+      // else if (res.status ) {
+      //   alert("Your Order is Pending Complete the Payment to the Place Order");
+      //   window.location = "/myorders";
+      // }
+      else {
         window.location = "/login";
       }
     });
