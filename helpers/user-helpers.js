@@ -467,4 +467,17 @@ module.exports = {
       });
     });
   },
+  CancelOrder: (orderId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.ORDER_COLLECTION)
+        .removeOne({ _id: ObjectId(orderId) })
+        .then((response) => {
+          resolve(true);
+        })
+        .catch((err) => {
+          reject(false);
+        });
+    });
+  },
 };

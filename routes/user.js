@@ -236,4 +236,15 @@ router.post("/change-password", verifylogin, (req, res) => {
     });
 });
 
+router.post("/cancelorder/:id", (req, res) => {
+  userHelpers
+    .CancelOrder(req.params.id)
+    .then((response) => {
+      res.json({ status: response });
+    })
+    .catch((err) => {
+      res.json({ status: err });
+    });
+});
+
 module.exports = router;
