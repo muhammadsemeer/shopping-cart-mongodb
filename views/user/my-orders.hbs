@@ -53,19 +53,24 @@
             Current Status:
             {{this.status}}
           </p>
-          {{#ifPaid this.paid}}
+          {{#isPending this.status}}
+            <button onclick="payOnline('{{this._id}}',{{this.total}})">
+              Pay
+            </button>
+          {{/isPending}}
+          {{#isPaid this.paid}}
             <h1>
               Payment Details
             </h1>
             <p>
               Payment Id:
-              {{this.razorpay_payment_id}}
+              {{../this.razorpay_payment_id}}
             </p>
             <p>
               Razorpay_Order Id:
-              {{this.razorpay_order_id}}
+              {{../this.razorpay_order_id}}
             </p>
-          {{/ifPaid}}
+          {{/isPaid}}
           <button onclick="cancelOrder({{this._id}})">
             Cancel Order
           </button>

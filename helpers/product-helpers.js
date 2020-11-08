@@ -119,4 +119,80 @@ module.exports = {
       }
     });
   },
+  getAllOrders: () => {
+    return new Promise(async (resolve, reject) => {
+      let orders = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .aggregate([
+          {
+            $match: {},
+          },
+          {
+            $unwind: "$products",
+          },
+          {
+            $project: {
+              deliveryDetials: "$deliveryDetials",
+              userId: "$userId",
+              paymentmethod: "$paymentmethod",
+              total: "$total",
+              item: "$products.item",
+              quantity: "$products.quantity",
+              orderdate: "$orderdate",
+              deliverydate: "$deliverydate",
+              status: "$status",
+              paid: "$paid",
+              razorpay_order_id: "$razorpay_order_id",
+              razorpay_payment_id: "$razorpay_payment_id",
+            },
+          },
+          {
+            $lookup: {
+              from: collection.PRODUCT_COLLECTION,
+              localField: "item",
+              foreignField: "_id",
+              as: "products",
+            },
+          },
+          {
+            $lookup: {
+              from: collection.USER_COLLECTION,
+              localField: "userId",
+              foreignField: "_id",
+              as: "user",
+            },
+          },
+          {
+            $project: {
+              deliveryDetials: 1,
+              userId: 1,
+              paymentmethod: 1,
+              total: 1,
+              product: { $arrayElemAt: ["$products", 0] },
+              user: { $arrayElemAt: ["$user", 0] },
+              quantity: 1,
+              orderdate: 1,
+              deliverydate: 1,
+              status: 1,
+              paid: 1,
+              razorpay_order_id: 1,
+              razorpay_payment_id: 1,
+            },
+          },
+        ])
+        .toArray();
+      resolve(orders);
+    });
+  },
+  getAllUsers: () => {
+    return new Promise(async (resolve, reject) => {
+      let users = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .find({ admin: { $ne: true } })
+        .toArray();
+      resolve(users);
+    });
+  },
 };

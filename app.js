@@ -23,8 +23,15 @@ app.engine(
     layoutsDir: __dirname + "/views/layout/",
     partialsDir: __dirname + "/views/partials/",
     helpers: {
-      ifPaid: function (payment, options) {
-        if (payment === "Paid") {
+      isPaid: (payment, options) => {
+        if(payment === "Paid") {
+          return options.fn(this)
+        } else {
+          return options.inverse(this)
+        }
+      },
+      isPending: function (status, options) {
+        if (status === "Pending") {
           return options.fn(this);
         } else {
           return options.inverse(this);
@@ -51,8 +58,8 @@ app.use("/", userRouter);
 app.use("/admin", adminRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
+app.use("*", (req, res) => {
+  res.status(404).render("404.hbs");
 });
 
 // error handler

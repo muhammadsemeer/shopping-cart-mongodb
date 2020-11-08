@@ -1,4 +1,5 @@
 var express = require("express");
+const { Db } = require("mongodb");
 var router = express.Router();
 var productHelper = require("../helpers/product-helpers");
 var userHelpers = require("../helpers/user-helpers");
@@ -164,6 +165,74 @@ router.post("/verify-payment", verifylogin, (req, res) => {
     })
     .catch((err) => {
       res.json({ status: false });
+    });
+});
+
+router.post("/payment", (req, res) => {
+  const { orderId, amount } = req.query;
+  userHelpers.generateRazorpay(orderId, amount).then((response) => {
+    res.json(response);
+  });
+});
+
+router.get("/profile", verifylogin, async (req, res) => {
+  let userDetails = await userHelpers.getProfile(req.session.user._id);
+  res.render("user/profile", { user: req.session.user, userDetails });
+});
+
+router.get("/profile/edit", verifylogin, async (req, res) => {
+  let userDetails = await userHelpers.getProfile(req.session.user._id);
+  res.render("user/edit-profile", {
+    user: req.session.user,
+    userDetails,
+    error: req.session.profileErr,
+  });
+  req.session.profileErr = null;
+});
+
+router.post("/profile/edit", (req, res) => {
+  if (
+    req.body.email === req.session.user.email &&
+    req.body.name === req.session.user.name
+  ) {
+    req.session.profileErr = "Name and Email Id is same no need to change";
+    res.redirect("/profile/edit");
+  } else {
+    userHelpers
+      .changeProfile(req.body, req.session.user._id)
+      .then((response) => {
+        if (req.body.email !== req.session.user.email) {
+          req.session.destroy();
+          res.redirect("/login");
+        } else {
+          res.redirect("/profile");
+        }
+      })
+      .catch((error) => {
+        req.session.profileErr = error.msg;
+        res.redirect("/profile/edit");
+      });
+  }
+});
+
+router.get("/change-password", verifylogin, (req, res) => {
+  res.render("user/change-password", {
+    user: req.session.user,
+    error: req.session.passErr,
+  });
+  req.session.passErr = null;
+});
+
+router.post("/change-password", verifylogin, (req, res) => {
+  userHelpers
+    .changePassword(req.body, req.session.user._id)
+    .then((response) => {
+      req.session.destroy();
+      res.redirect("/login");
+    })
+    .catch((error) => {
+      req.session.passErr = error.msg;
+      res.redirect("/change-password");
     });
 });
 

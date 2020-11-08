@@ -389,4 +389,82 @@ module.exports = {
         });
     });
   },
+  getProfile: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      let userDetails = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .find(
+          { _id: ObjectId(userId) },
+          {
+            projection: {
+              name: true,
+              email: true,
+            },
+          }
+        )
+        .toArray();
+      resolve(userDetails[0]);
+    });
+  },
+  changeProfile: (details, userId) => {
+    return new Promise(async (resolve, reject) => {
+      const { name, email } = details;
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .updateOne(
+          { _id: ObjectId(userId) },
+          {
+            $set: {
+              name: name,
+              email: email,
+            },
+          }
+        )
+        .then((response) => {
+          resolve();
+        })
+        .catch((err) => {
+          reject({ msg: "Given Email Id already exists" });
+        });
+    });
+  },
+  changePassword: (passwords, userId) => {
+    return new Promise(async (resolve, reject) => {
+      var { expassword, newpassword, conpassword } = passwords;
+      let expass = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .find(
+          { _id: ObjectId(userId) },
+          {
+            projection: {
+              _id: false,
+              password: true,
+            },
+          }
+        )
+        .toArray();
+      bcrypt.compare(expassword, expass[0].password).then(async (status) => {
+        if (status) {
+          newpassword = await bcrypt.hash(newpassword, 10);
+          db.get()
+            .collection(collection.USER_COLLECTION)
+            .updateOne(
+              { _id: ObjectId(userId) },
+              {
+                $set: {
+                  password: newpassword,
+                },
+              }
+            )
+            .then((response) => {
+              resolve();
+            });
+        } else {
+          reject({ msg: "Current Password is Wrong" });
+        }
+      });
+    });
+  },
 };

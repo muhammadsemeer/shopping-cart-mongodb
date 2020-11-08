@@ -175,6 +175,18 @@ const validation = (event) => {
     return true;
   }
 };
+const payOnline = (orderId, amount) => {
+  fetch(`/payment?orderId=${orderId}&amount=${amount}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      razorpayPayment(res);
+    });
+};
 
 function razorpayPayment(order) {
   var options = {
@@ -211,6 +223,7 @@ function razorpayPayment(order) {
         " Order ID = " +
         response.error.metadata.order_id
     );
+    window.location = "/myorders";
   });
   rzp1.open();
 }
