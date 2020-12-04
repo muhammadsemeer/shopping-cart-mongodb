@@ -9,7 +9,7 @@ var db = require("./config/connection");
 var session = require("express-session");
 var userRouter = require("./routes/user");
 var adminRouter = require("./routes/admin");
-
+var subdomain = require("express-subdomain");
 var app = express();
 
 // view engine setup
@@ -24,10 +24,10 @@ app.engine(
     partialsDir: __dirname + "/views/partials/",
     helpers: {
       isPaid: (payment, options) => {
-        if(payment === "Paid") {
-          return options.fn(this)
+        if (payment === "Paid") {
+          return options.fn(this);
         } else {
-          return options.inverse(this)
+          return options.inverse(this);
         }
       },
       isPending: function (status, options) {
@@ -55,7 +55,7 @@ db.connect((err) => {
 });
 
 app.use("/", userRouter);
-app.use("/admin", adminRouter);
+app.use(subdomain("admin", adminRouter));
 
 // catch 404 and forward to error handler
 app.use("*", (req, res) => {
