@@ -55,7 +55,7 @@ db.connect((err) => {
 });
 
 app.use("/", userRouter);
-app.use(subdomain("admin", adminRouter));
+app.use("/admin", adminRouter);
 
 // catch 404 and forward to error handler
 app.use("*", (req, res) => {
